@@ -1,25 +1,46 @@
 import React from "react";
 import { IMAGE_SIZE } from "../const";
+import { Link } from 'react-router-dom';
+import styled from "@emotion/styled";
+
+const ItemFilm = styled.section`
+    width: 220px;
+    margin: 20px 30px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    overflow: hidden;
+    &:hover{
+        transform: scale(1.05);
+    }
+    transition: 0.3s;
+
+`;
+
+const Desccriptions = styled.div`
+    padding: 10px;
+    p{
+        color: rgba(0, 0, 0, 0.6);
+    }
+    h3{
+        margin: 0 0 10px 0;
+    }
+`;
 
 export default function FilmItem({ filmItem }) {
-    /*image
-    https://image.tmdb.org/t/p/w220_and_h330_face/7D430eqZj8y3oVkLFfsWXGRcpEG.jpg
-    w600_and_h900_bestv2
-    w300_and_h450_bestv2
-  */
- console.log(filmItem)
 
-    const srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem?.poster_path}`;
+    let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem?.poster_path}`;
 
     return (
-        <section className="film-item">
-            <div className="film-item__poster">
+        <ItemFilm>
+            <Link to={`/film/${filmItem.id}`}>
                 <img src={srcImg} />
-            </div>
-            <div className="film-item__desccriptions">
-                <h3 className="film-item__title">{filmItem?.title}</h3>
-                <div className="film-item__date">{filmItem?.release_date}</div>
-            </div>
-        </section>
+                <Desccriptions>
+                    <h3>{filmItem?.title}</h3>
+                    <p>{filmItem?.release_date}</p>
+                </Desccriptions>
+            </Link>
+        </ItemFilm>
     );
 }
