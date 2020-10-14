@@ -10,8 +10,14 @@ const Frame = styled.iframe`
     display: block;
 `;
 
+const NotFound = styled.p`
+    text-align: center;
+    font-size: 2rem;
+    margin: 50px 0;
+`;
+
 export default function FilmVideo({ videoId }) {
-    const [video, setVideo] = useState();
+    const [video, setVideo] = useState('');
    
     useEffect(() => {
         fetch(
@@ -19,18 +25,19 @@ export default function FilmVideo({ videoId }) {
         )
             .then((response) => response.json())
             .then((filmVideo) => {
-                console.log(filmVideo.results);
-                let trailer = filmVideo.results.filter(film=> film.name.toLowerCase().includes('trailer'))
-                setVideo(trailer[0].key);
+                let trailer = filmVideo.results.filter(film=> film.type === "Trailer")
+                setVideo(trailer[0]?.key);
             });
     }, [videoId]);
     return (
+        video ?
         <Frame
             width="640"
             height="370"
             src={`https://www.youtube.com/embed/${video}`}
             allowFullScreen
             frameBorder="0">
-        </Frame>
+        </Frame> :
+         <NotFound>video not found</NotFound>
     );
 }

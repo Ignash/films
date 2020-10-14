@@ -18,6 +18,14 @@ const Navigation = styled.nav`
   }
   li{
     padding: 0 10px;
+    
+  }
+  a{
+    color: #484848;
+    &:hover{
+      color: #000;
+    }
+    transition: 0.15s;
   }
   li:not(:last-child){
     border-right: 1px solid

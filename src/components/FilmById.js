@@ -17,9 +17,12 @@ const Info = styled.div`
 
 const Poster =styled.div`
     height: 450px;
+    min-width: 250px;
     img{
         height: 100%;
         width: auto;
+        border-radius: 5px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     }
 `;
 const Description =styled.div`
@@ -36,44 +39,39 @@ const Description =styled.div`
     p:last-child{
         margin-top: 20px
     }
-
 `;
 
 const Video = styled.div`
     margin: 0 auto;
 `;
 
+const NotFound = styled.p`
+    text-align: center;
+    margin-top: 50px;
+`;
 
-export default function FilmById({ match, location }) {
+export default function FilmById() {
     const { id } = useParams();
     const [filmData, setFilmData] = useState();
 
     let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.medium}${filmData?.poster_path}`;
 
-
-     /*p/w1920_and_h800_multi_faces/kMe4TKMDNXTKptQPAdOF0oZHq3V.jpg
-    https://image.tmdb.org/t/p/w220_and_h330_face/7D430eqZj8y3oVkLFfsWXGRcpEG.jpg
-    
-    */
-
     useEffect(() => {
         fetch(
+
             `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`
         )
             .then((response) => response.json())
             .then((filmData) => {
-                console.log(filmData);
                 setFilmData(filmData);
             });
     }, [id]);
-
-    
 
     return (
         <Section>
             <Info>
                 <Poster>
-                    <img src={srcImg} />
+                    {filmData?.poster_path ? <img src={srcImg} alt="poster"/> : <NotFound>Poster not found</NotFound>}
                 </Poster>
                 <Description>
                     <h2>{filmData?.title}</h2>
@@ -85,7 +83,6 @@ export default function FilmById({ match, location }) {
                 <FilmVideo videoId={id} />
             <Video>
             </Video>
-
         </Section>
     );
 }

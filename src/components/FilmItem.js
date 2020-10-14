@@ -1,6 +1,6 @@
 import React from "react";
 import { IMAGE_SIZE } from "../const";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 
 const ItemFilm = styled.section`
@@ -11,31 +11,43 @@ const ItemFilm = styled.section`
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     background-color: #fff;
     overflow: hidden;
-    &:hover{
-        transform: scale(1.05);
+    &:hover {
+        transform: translateY(-10px);
     }
     transition: 0.3s;
-
 `;
 
 const Desccriptions = styled.div`
     padding: 10px;
-    p{
+    p {
         color: rgba(0, 0, 0, 0.6);
     }
-    h3{
+    h3 {
         margin: 0 0 10px 0;
     }
 `;
 
-export default function FilmItem({ filmItem }) {
+const ShoulBe = styled.div`
+    height: 330px;
+    text-align: center;
+    p {
+        margin-top: 50px;
+    }
+`;
 
-    let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem?.poster_path}`;
+export default function FilmItem({ filmItem }) {
+    let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem.poster_path}`;
 
     return (
         <ItemFilm>
             <Link to={`/film/${filmItem.id}`}>
-                <img src={srcImg} />
+                {filmItem.poster_path ? (
+                    <img src={srcImg} alt="poster" />
+                ) : (
+                    <ShoulBe>
+                        <p>There should be a poster</p>
+                    </ShoulBe>
+                )}
                 <Desccriptions>
                     <h3>{filmItem?.title}</h3>
                     <p>{filmItem?.release_date}</p>

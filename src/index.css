@@ -58,28 +58,6 @@ a{
   color: inherit;
 }
 
-.film-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 0 50px;
-    max-width: 1500px;
-    margin: 0 auto;
-}
-
-
-.film-item__desccriptions {
-    
-}
-
-.film-item__title {
-   
-}
-
-.film-item__date {
-    
-}
-
 .active{
   text-decoration: underline;
 }
