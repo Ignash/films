@@ -31,32 +31,37 @@ export default function Search() {
         if (refInput.current.value.length > 0) {
             searchInAction = true;
             return setTimeout(() => {
-                if(!refInput.current.value.length) {
+                if (!refInput.current.value.length) {
                     setSearchResult([]);
                     return;
-                };
+                }
                 fetch(
-                    `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${refInput.current.value.replace(/\W/g,'%20')}&page=1&include_adult=false`
+                    `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${refInput.current.value.replace(/\W/g, "%20")}&page=1&include_adult=false`
                 )
                     .then((response) => response.json())
                     .then((searchData) => {
-                        setSearchResult(searchData.results);
+                        console.log(searchData)
+                        setSearchResult(searchData);
                     });
                 searchInAction = false;
             }, delay);
         }
     };
 
-    useEffect((prev)=>{
-        refInput.current.focus()
-    },[])
+    useEffect((prev) => {
+        refInput.current.focus();
+    }, []);
 
     return (
         <>
             <SectionSearch>
                 <input ref={refInput} type="text" onChange={handlerSearch} />
             </SectionSearch>
-            {searchResult?.length>0 ? <FilmList films={searchResult} /> : <Nothing>Nothing found</Nothing>}
+            {searchResult?.length > 0 ? (
+                <FilmList films={searchResult} />
+            ) : (
+                <Nothing>Nothing found</Nothing>
+            )}
         </>
     );
 }

@@ -1,27 +1,14 @@
-import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React from "react";
+import WrapperSelect from "../styled_component/WrapperSelect";
 
-const SortWrapper = styled.div`
-    text-align: center;
-    margin-top: 25px;
-    select{
-        padding: 3px 10px;
-        margin-left: 10px;
-        border: none;
-        background: transparent;
-        outline: none;
-        border-bottom: 2px solid;
-    }
-`;
-export default function Sorting({sortingList}) {
-
+export default function Sorting({ sortingList }) {
     const handleChange = (event) => {
-        sortingList(event.target.value)
+        sortingList(event.target.value);
     };
     return (
-        <SortWrapper>
+        <WrapperSelect>
             <span>Sorting by:</span>
-            <select defaultValue=' ' onChange={handleChange}>
+            <select defaultValue=" " onChange={handleChange}>
                 <option disabled value=" ">
                     &nbsp;
                 </option>
@@ -30,6 +17,6 @@ export default function Sorting({sortingList}) {
                 <option value="AZ">Title(A-Z)</option>
                 <option value="ZA">Title(Z-A)</option>
             </select>
-        </SortWrapper>
+        </WrapperSelect>
     );
 }

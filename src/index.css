@@ -51,6 +51,7 @@ input, button{
 button {
   font: inherit;
   cursor: pointer;
+  background-color: transparent;
 }
 
 a{
@@ -61,4 +62,6 @@ a{
 .active{
   text-decoration: underline;
 }
+
+
 

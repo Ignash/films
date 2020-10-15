@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef, useState, useContext } from "react";
 import { IMAGE_SIZE } from "../const";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
+import { UserContext } from "../context/contexts";
 
 const ItemFilm = styled.section`
     width: 220px;
@@ -15,15 +16,30 @@ const ItemFilm = styled.section`
         transform: translateY(-10px);
     }
     transition: 0.3s;
+    position: relative;
 `;
 
 const Desccriptions = styled.div`
     padding: 10px;
+    position: relative;
     p {
         color: rgba(0, 0, 0, 0.6);
     }
     h3 {
         margin: 0 0 10px 0;
+    }
+    p: last-child {
+        position: absolute;
+        top: -40px;
+        right: 10px;
+        color: white;
+        height: 30px;
+        width: 30px;
+        background: #5caabd;
+        text-align: center;
+        line-height: 30px;
+        border-radius: 50%;
+        border: 2px solid #1b3e27;
     }
 `;
 
@@ -34,9 +50,39 @@ const ShoulBe = styled.div`
         margin-top: 50px;
     }
 `;
+const Favorit = styled.button`
+    font-size: 2rem;
+    position: absolute;
+    top: 290px;
+    left: 5px;
+    color: #ccccccd9;
+    transition: 0.3s;
+    &:hover {
+        color: #ccc;
+    }
+    &.favorit {
+        color: #ecc325f2;
+    }
+`;
 
 export default function FilmItem({ filmItem }) {
     let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem.poster_path}`;
+
+    const { user, favorits, addToFavorits, deleteFromFavorits } = useContext(
+        UserContext
+    );
+    const [favorit, setFavorit] = useState(favorits?.includes(filmItem.id));
+    const refFavorit = useRef();
+
+    const checkFavorit = () => {
+        if (!refFavorit.current.classList.contains("favorit")) {
+            setFavorit(true);
+            addToFavorits(filmItem.id);
+        } else {
+            setFavorit(false);
+            deleteFromFavorits(filmItem.id);
+        }
+    };
 
     return (
         <ItemFilm>
@@ -51,8 +97,18 @@ export default function FilmItem({ filmItem }) {
                 <Desccriptions>
                     <h3>{filmItem?.title}</h3>
                     <p>{filmItem?.release_date}</p>
+                    <p>{filmItem?.vote_average}</p>
                 </Desccriptions>
             </Link>
+            {user && (
+                <Favorit
+                    className={favorit ? "favorit" : ""}
+                    ref={refFavorit}
+                    onClick={checkFavorit}
+                >
+                    &#9733;
+                </Favorit>
+            )}
         </ItemFilm>
     );
 }
