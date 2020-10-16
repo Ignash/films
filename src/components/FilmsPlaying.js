@@ -1,18 +1,16 @@
-import React, { useState, useEffect, useRef, useContext } from "react";
+import React, { useState, useEffect, useRef} from "react";
 import FilmList from "./FilmList";
 import { API_KEY } from "../const";
 import Loader from "./Loader";
 import { InputField } from "../styled_component/InputField";
-import { DefaultListFilmsContext } from "../context/contexts";
+import store from '../store/store'
+import actionGetCurrent from '../store/actions/actionGetCurrent';
 
-export default function FilmsPlaying() {
+export default function FilmsPlaying({currentFilms}) {
 
-    const {defaultListFilms} = useContext(DefaultListFilmsContext)
-    const [films, setFilms] = useState([]);
     const [page, setPage] = useState(1);
-    const [currentUrlFetch, setCurrentUrlFetch] = useState(
-        `https://api.themoviedb.org/3/movie/${defaultListFilms}?api_key=${API_KEY}&language=en-US&page=${page}`
-    );
+    const defaultListUrl = `https://api.themoviedb.org/3/movie/${store.getState().defaultListFilms}?api_key=${API_KEY}&language=en-US&page=${page}`;
+    const [currentUrlFetch, setCurrentUrlFetch] = useState(defaultListUrl);
     const refInput = useRef("");
 
     let searchInAction = false;
@@ -28,15 +26,17 @@ export default function FilmsPlaying() {
             searchInAction = true;
             return setTimeout(() => {
                 if (!refInput.current.value.length) {
-                    setFilms([]);
+                    // setFilms([]);
+                    setCurrentUrlFetch(defaultListUrl);
                     return;
                 }
 
                 setCurrentUrlFetch(
-                    `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${refInput.current.value.replace(
-                        /\W/g,
-                        "%20"
-                    )}&include_adult=false&page=1`
+                    `https://api.themoviedb.org/3/search/movie?
+                    api_key=${API_KEY}
+                    &language=en-US
+                    &query=${refInput.current.value.replace(/\W/g,"%20")}
+                    &include_adult=false&page=1`
                 );
 
                 searchInAction = false;
@@ -44,7 +44,7 @@ export default function FilmsPlaying() {
         }
     };
     useEffect(
-        (prevP) => {
+        () => {
             setCurrentUrlFetch((prev) => {
                 let index = prev.lastIndexOf("page=") + 5;
                 let currUrl = prev.split("");
@@ -57,11 +57,7 @@ export default function FilmsPlaying() {
 
     useEffect(() => {
         refInput.current.focus();
-        fetch(currentUrlFetch)
-            .then((response) => response.json())
-            .then((filmsData) => {
-                setFilms(filmsData);
-            });
+        store.dispatch(actionGetCurrent(currentUrlFetch));
     }, [currentUrlFetch]);
 
     return (
@@ -73,8 +69,8 @@ export default function FilmsPlaying() {
                     onChange={handlerSearch}
                 />
             </section>
-            {films.results?.length ? (
-                <FilmList films={films} changePage={changePage} />
+            {currentFilms.results ? (
+                <FilmList films={currentFilms} changePage={changePage} />
             ) : (
                 <Loader />
             )}

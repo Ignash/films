@@ -11,7 +11,6 @@ export default function Reviews({ id }) {
         )
             .then((response) => response.json())
             .then((reviewsData) => {
-                console.log(reviewsData);
                 setReviews(reviewsData.results);
             });
     }, [id]);

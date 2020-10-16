@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 
 import { API_KEY } from "../const";
+import Loader from "./Loader";
 
 const Frame = styled.iframe`
     width: 100%;
@@ -17,7 +18,7 @@ const NotFound = styled.p`
 `;
 
 export default function FilmVideo({ videoId }) {
-    const [video, setVideo] = useState("");
+    const [video, setVideo] = useState("loading");
 
     useEffect(() => {
         fetch(
@@ -28,10 +29,12 @@ export default function FilmVideo({ videoId }) {
                 let trailer = filmVideo?.results.filter(
                     (film) => film.type === "Trailer"
                 );
-                setVideo(trailer[0].key);
+                setVideo(trailer[0]?.key);
             });
     }, [videoId]);
-    return video ? (
+    return video === "loading" ? (
+        <Loader />
+    ) : video ? (
         <Frame
             width="640"
             height="370"

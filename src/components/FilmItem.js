@@ -65,22 +65,23 @@ const Favorit = styled.button`
     }
 `;
 
-export default function FilmItem({ filmItem }) {
+export default function FilmItem(props) {
+    const { filmItem, delFavorite, addFavorite, favoriteFilms } = props;
     let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem.poster_path}`;
 
-    const { user, favorits, addToFavorits, deleteFromFavorits } = useContext(
-        UserContext
+    const { user } = useContext(UserContext);
+    const [favorit, setFavorit] = useState(
+        favoriteFilms?.includes(filmItem.id)
     );
-    const [favorit, setFavorit] = useState(favorits?.includes(filmItem.id));
     const refFavorit = useRef();
 
     const checkFavorit = () => {
         if (!refFavorit.current.classList.contains("favorit")) {
             setFavorit(true);
-            addToFavorits(filmItem.id);
+            addFavorite(filmItem.id);
         } else {
             setFavorit(false);
-            deleteFromFavorits(filmItem.id);
+            delFavorite(filmItem.id);
         }
     };
 

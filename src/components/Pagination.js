@@ -26,13 +26,17 @@ const SwitchButton = styled.button`
 `;
 
 export default function Pagination({ totalPages, currentPage, changePage }) {
-    let leftLimit = 3;
-    let rightLimit = 3;
+    const leftLimit = 3;
+    const rightLimit = 3;
 
     const [arrayButton, setArrayButton] = useState([]);
 
-    const getCurrentArrayButton = ()=>{
-        let pagesInPag = leftLimit + rightLimit + 1;
+    useEffect(() => {
+        setArrayButton(getCurrentArrayButton(totalPages, currentPage));
+    }, [currentPage, totalPages]);
+
+    function getCurrentArrayButton(totalPages, currentPage){
+        const pagesInPag = leftLimit + rightLimit + 1;
         let arrayButton = [];
         if (totalPages <= pagesInPag) {
             for (let i = 1; i <= totalPages; i++) {
@@ -64,10 +68,6 @@ export default function Pagination({ totalPages, currentPage, changePage }) {
                 
     }
 
-    useEffect(() => {
-        setArrayButton(getCurrentArrayButton());
-    }, [currentPage, totalPages, leftLimit, rightLimit]);
-
     return (
         <>
             <ButtonsWrapper>
@@ -81,8 +81,7 @@ export default function Pagination({ totalPages, currentPage, changePage }) {
                         className={item === currentPage ? "active" : ""}
                         key={item}
                         disabled={item === currentPage}
-                        onClick={() => changePage(item)}
-                    >
+                        onClick={() => changePage(item)}>
                         {item}
                     </ButtonContainer>
                 ))}

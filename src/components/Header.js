@@ -1,7 +1,6 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "@emotion/styled";
 import { Link, NavLink } from "react-router-dom";
-import { UserContext } from "../context/contexts";
 
 const HeaderPage = styled.header`
     width: 100%;
@@ -47,8 +46,7 @@ const Navigation = styled.nav`
     }
 `;
 
-export default function Header() {
-    const { user, loginUser } = useContext(UserContext);
+export default function Header({ user, logoutUser }) {
     return (
         <HeaderPage>
             <Navigation>
@@ -58,14 +56,14 @@ export default function Header() {
                             Films
                         </NavLink>
                     </li>
-                    {user && (
+                    {(user.status === "user" || user.status === "admin") && (
                         <li>
                             <NavLink activeClassName="active" to="/favorits">
-                            Favorites
+                                Favorites
                             </NavLink>
                         </li>
                     )}
-                    {user?.status === "admin" && (
+                    {user.status === "admin" && (
                         <li>
                             <NavLink
                                 activeClassName="active"
@@ -78,15 +76,13 @@ export default function Header() {
                 </ul>
             </Navigation>
             <Sign>
-                {user ? (
+                {user.name ? (
                     <>
                         <span>{user.name}</span>
                         <button
                             onClick={() => {
-                                localStorage.clear();
-                                loginUser();
-                            }}
-                        >
+                                logoutUser();
+                            }}>
                             Logout
                         </button>
                     </>

@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
-import FilmItem from "./FilmItem";
 import Pagination from "./Pagination";
 import Sorting from "./Sorting";
+import FilmItemW from './wrapper/FilmItemW'
+
 
 const ListFilm = styled.div`
     display: flex;
@@ -11,6 +12,11 @@ const ListFilm = styled.div`
     margin: 0 50px;
     max-width: 1500px;
     margin: 0 auto;
+`;
+const NotFound = styled.p`
+    text-align: center;
+    font-size: 2rem;
+    margin: 50px 0;
 `;
 
 export default function FilmList(props) {
@@ -74,11 +80,12 @@ export default function FilmList(props) {
     };
 
     return (
+        newFilmsList.length>0 ?
         <>
             <Sorting sortingList={sortingList} />
             <ListFilm>
                 {newFilmsList.map((film) => (
-                    <FilmItem key={film.id} filmItem={film} />
+                    <FilmItemW key={film.id} filmItem={film} />
                 ))}
             </ListFilm>
             {props.films?.page && (
@@ -88,6 +95,6 @@ export default function FilmList(props) {
                     changePage={changePage}
                 />
             )}
-        </>
+        </> : <NotFound>Nothing found</NotFound>
     );
 }

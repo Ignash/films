@@ -21,6 +21,7 @@ export default function UserProvider({ children }) {
         localStorage.setItem("favorits", JSON.stringify([...favorits, id]));
         setFavorits((prevFav) => [...prevFav, id]);
     };
+    
     const deleteFromFavorits = (id) => {
         setFavorits((prevFav) => {
             let copyFav = [...prevFav];

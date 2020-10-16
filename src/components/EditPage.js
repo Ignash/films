@@ -1,15 +1,17 @@
-import React, {useContext} from "react";
+import React from "react";
 import WrapperSelect from "../styled_component/WrapperSelect";
-import { DefaultListFilmsContext } from "../context/contexts";
-
+import store from "../store/store";
+import actionSetDefaultList from "../store/actions/actionSetDefaultList";
 
 export default function EditPage() {
-    const {defaultListFilms, changeDefaultListFilms } = useContext(DefaultListFilmsContext)
-
     return (
         <WrapperSelect>
             <span>Films list when opened:</span>
-            <select defaultValue={defaultListFilms} onChange={(event)=>{changeDefaultListFilms(event.target.value)}}>
+            <select
+                defaultValue={store.getState().defaultListFilms}
+                onChange={(event) => {
+                    store.dispatch(actionSetDefaultList(event.target.value));
+                }}>
                 <option value="latest">Latest</option>
                 <option value="now_playing">Now Playing</option>
                 <option value="popular">Popular</option>
