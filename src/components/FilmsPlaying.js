@@ -30,14 +30,8 @@ export default function FilmsPlaying({currentFilms}) {
                     setCurrentUrlFetch(defaultListUrl);
                     return;
                 }
-
-                setCurrentUrlFetch(
-                    `https://api.themoviedb.org/3/search/movie?
-                    api_key=${API_KEY}
-                    &language=en-US
-                    &query=${refInput.current.value.replace(/\W/g,"%20")}
-                    &include_adult=false&page=1`
-                );
+                console.log(currentUrlFetch);
+                setCurrentUrlFetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${refInput.current.value.replace(/\W/g,"%20")}&include_adult=false&page=1`);
 
                 searchInAction = false;
             }, delay);
