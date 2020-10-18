@@ -2,8 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { API_KEY } from "../const";
 import FilmList from "./FilmList";
-import store from "../store/store";
-import actionGetCurrent from "../store/actions/actionGetCurrent";
 
 const SectionSearch = styled.section`
     input {
@@ -42,7 +40,6 @@ export default function Search() {
                 )
                     .then((response) => response.json())
                     .then((searchData) => {
-                        console.log(searchData)
                         setSearchResult(searchData);
                     });
                 searchInAction = false;

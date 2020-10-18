@@ -2,7 +2,10 @@ import React, { useRef, useState, useContext } from "react";
 import { IMAGE_SIZE } from "../const";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
-import { UserContext } from "../context/contexts";
+import { useSelector } from "react-redux";
+import mapStateToProps from '../store/mapStateToProps';
+import mapDispatchToProps from '../store/mapDispatchToProps';
+import { connect } from 'react-redux';
 
 const ItemFilm = styled.section`
     width: 220px;
@@ -65,11 +68,12 @@ const Favorit = styled.button`
     }
 `;
 
-export default function FilmItem(props) {
+function FilmItem(props) {
     const { filmItem, delFavorite, addFavorite, favoriteFilms } = props;
     let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem.poster_path}`;
 
-    const { user } = useContext(UserContext);
+    const user = useSelector((store)=> store.user)
+
     const [favorit, setFavorit] = useState(
         favoriteFilms?.includes(filmItem.id)
     );
@@ -101,7 +105,7 @@ export default function FilmItem(props) {
                     <p>{filmItem?.vote_average}</p>
                 </Desccriptions>
             </Link>
-            {user && (
+            {(user.status==="user" || user.status==="admin") && (
                 <Favorit
                     className={favorit ? "favorit" : ""}
                     ref={refFavorit}
@@ -113,3 +117,5 @@ export default function FilmItem(props) {
         </ItemFilm>
     );
 }
+
+export default connect(mapStateToProps('FavoritsFilms'), mapDispatchToProps('FilmItem'))(FilmItem);

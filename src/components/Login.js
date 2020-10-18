@@ -1,10 +1,9 @@
 import styled from "@emotion/styled";
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { InputField } from "../styled_component/InputField";
-import { UserContext } from "../context//contexts";
-import store from "../store/store"
 import actionSetUser from "../store/actions/actionSetUser";
+import { useDispatch } from "react-redux";
 
 const WrapperBlock = styled.form`
     width: 400px;
@@ -56,7 +55,7 @@ const Paragraf = styled.p`
 
 export default function Login() {
     const [login, setLogin] = useState(false);
-    const {loginUser} = useContext(UserContext)
+    const dispatch = useDispatch();
 
     const handlerOnFocus = (event) => {
         event.target.previousSibling.classList.add("label-focus");
@@ -100,15 +99,10 @@ export default function Login() {
         }
 
         if (nameValid && passwordValid) {
-
             let status =
                 name === "admin" && password === "admin" ? "admin" : "user";
-            // localStorage.setItem("user", JSON.stringify({ name, password, status}));
-            // localStorage.setItem("favorits", JSON.stringify([]));
-
             setLogin(true);
-            loginUser();
-            store.dispatch(actionSetUser({ name, password, status}))
+            dispatch(actionSetUser({ name, password, status}))
         }
     };
 

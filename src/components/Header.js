@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Link, NavLink } from "react-router-dom";
+import mapStateToProps from '../store/mapStateToProps';
+import mapDispatchToProps from '../store/mapDispatchToProps';
+import { connect } from 'react-redux';
 
 const HeaderPage = styled.header`
     width: 100%;
@@ -46,7 +49,7 @@ const Navigation = styled.nav`
     }
 `;
 
-export default function Header({ user, logoutUser }) {
+function Header({ user, logoutUser }) {
     return (
         <HeaderPage>
             <Navigation>
@@ -81,6 +84,7 @@ export default function Header({ user, logoutUser }) {
                         <span>{user.name}</span>
                         <button
                             onClick={() => {
+                                
                                 logoutUser();
                             }}>
                             Logout
@@ -95,3 +99,5 @@ export default function Header({ user, logoutUser }) {
         </HeaderPage>
     );
 }
+
+export default connect(mapStateToProps('Header'), mapDispatchToProps('Header'))(Header);

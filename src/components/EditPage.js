@@ -1,16 +1,18 @@
 import React from "react";
 import WrapperSelect from "../styled_component/WrapperSelect";
-import store from "../store/store";
 import actionSetDefaultList from "../store/actions/actionSetDefaultList";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function EditPage() {
+    const defaultValue = useSelector(store=>store.defaultListFilms)
+    const dispatch = useDispatch()
     return (
         <WrapperSelect>
             <span>Films list when opened:</span>
             <select
-                defaultValue={store.getState().defaultListFilms}
+                defaultValue={defaultValue}
                 onChange={(event) => {
-                    store.dispatch(actionSetDefaultList(event.target.value));
+                    dispatch(actionSetDefaultList(event.target.value));
                 }}>
                 <option value="latest">Latest</option>
                 <option value="now_playing">Now Playing</option>

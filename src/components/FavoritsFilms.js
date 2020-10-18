@@ -4,6 +4,8 @@ import { Redirect } from "react-router-dom";
 import { API_KEY } from "../const";
 import FilmList from "./FilmList";
 import Loader from "./Loader";
+import { connect } from 'react-redux';
+import mapStateToProps from '../store/mapStateToProps';
 
 const NoFilmsPar = styled.p`
     text-align: center;
@@ -11,7 +13,7 @@ const NoFilmsPar = styled.p`
     font-size: 2rem;
 `;
 
-export default function FavoritsFilms({favoriteFilms, user}) {
+function FavoritsFilms({favoriteFilms, user}) {
 
     const [films, setFilms] = useState();
     
@@ -31,3 +33,5 @@ export default function FavoritsFilms({favoriteFilms, user}) {
         </> : <Redirect to="/" />
     );
 }
+
+export default connect(mapStateToProps('FavoritsFilms'), null)(FavoritsFilms);

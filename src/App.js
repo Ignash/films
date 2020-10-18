@@ -8,43 +8,37 @@ import {
 import "./App.css";
 import FilmById from "./components/FilmById";
 import Search from "./components/Search";
-import HeaderW from "./components/wrapper/HeaderW";
+import Header from "./components/Header";
 import Page404 from "./components/Page404";
 import Login from "./components/Login";
 import EditPage from "./components/EditPage";
-import UserProvider from "./context/UserProvider";
-import DefaultListProvider from "./context/DefaultListProvider";
-import FavoritsFilmsW from "./components/wrapper/FavoritsFilmsW";
-import FilmsPlayingW from "./components/wrapper/FilmsPlayingW";
+import FavoritsFilms from "./components/FavoritsFilms";
+import FilmsPlaying from "./components/FilmsPlaying";
 
 import store from "./store/store"
 
 function App() {
     return (
         <Router>
-            <UserProvider>
-                <DefaultListProvider>
-                    <HeaderW />
-                    <Switch>
-                        <Route exact path="/" component={FilmsPlayingW} />
-                        <Route
-                            path="/admin/edit"
-                            render={() =>
-                                store.getState().user.status === "admin" ? (
-                                    <EditPage />
-                                ) : (
-                                    <Redirect to="/" />
-                                )
-                            }/>
-                        <Route path="/film/:id" component={FilmById} />
-                        <Route path="/search" component={Search} />
-                        <Route path="/page404" component={Page404} />
-                        <Route path="/login" component={Login} />
-                        <Route path="/favorits" component={FavoritsFilmsW} />
-                        <Route component={Page404} />
-                    </Switch>
-                </DefaultListProvider>
-            </UserProvider>
+            <Header />
+            <Switch>
+                <Route exact path="/" component={FilmsPlaying} />
+                <Route
+                    path="/admin/edit"
+                    render={() =>
+                        store.getState().user.status === "admin" ? (
+                            <EditPage />
+                        ) : (
+                            <Redirect to="/" />
+                        )
+                    }/>
+                <Route path="/film/:id" component={FilmById} />
+                <Route path="/search" component={Search} />
+                <Route path="/page404" component={Page404} />
+                <Route path="/login" component={Login} />
+                <Route path="/favorits" component={FavoritsFilms} />
+                <Route component={Page404} />
+            </Switch>
         </Router>
     );
 }

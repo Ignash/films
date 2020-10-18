@@ -1,11 +1,8 @@
-import actionSetCurrent from './actionSetCurrent'
+import {GET_CURRENT} from "./actionTypes"
 
 export default function actionGetCurrent(url) {
-    return (dispatch) => {
-        fetch(url)
-            .then((response) => response.json())
-            .then((data) => {
-                dispatch(actionSetCurrent(data));
-            });
-    };
+    return {
+        type: GET_CURRENT, 
+        payload: url
+    }
 }
