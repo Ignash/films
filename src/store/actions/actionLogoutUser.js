@@ -1,9 +1,8 @@
-const { SET_USER } = require("./actionTypes");
+const { LOGOUT } = require("./actionTypes");
 
 export default function actionLogoutUser(){
-    localStorage.clear();
     return{
-        type: SET_USER,
+        type: LOGOUT,
         payload: {name: null, password: null, status: null}
     }
 }

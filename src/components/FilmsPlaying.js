@@ -6,6 +6,14 @@ import { InputField } from "../styled_component/InputField";
 import actionGetCurrent from '../store/actions/actionGetCurrent';
 import mapStateToProps from '../store/mapStateToProps';
 import { connect, useDispatch, useSelector } from 'react-redux';
+import styled from "@emotion/styled";
+
+
+const NotFound = styled.p`
+    text-align: center;
+    font-size: 2rem;
+    margin: 50px 0;
+`;
 
 function FilmsPlaying({currentFilms}) {
     const defaultList = useSelector(store=>store.defaultListFilms)
@@ -63,11 +71,11 @@ function FilmsPlaying({currentFilms}) {
                     onChange={handlerSearch}
                 />
             </section>
-            {currentFilms.results ? (
-                <FilmList films={currentFilms} changePage={changePage} />
-            ) : (
-                <Loader />
-            )}
+            {currentFilms.results ? 
+            (currentFilms.results?.length > 0 ? <FilmList films={currentFilms} changePage={changePage} /> : <NotFound>Not found films</NotFound>) : 
+            (<Loader />)
+            }
+
         </>
     );
 }

@@ -1,13 +1,13 @@
-import {SET_USER} from '../actions/actionTypes'
-import initialState from '../initialState'
+import { LOGIN, LOGOUT } from "../actions/actionTypes";
+import initialState from "../initialState";
 
-export default function userReducer(state=initialState.user, action){
+export default function userReducer(state = initialState.user, action) {
     switch (action.type) {
-        case SET_USER:
-            localStorage.setItem("user", JSON.stringify(action.payload));
-            localStorage.setItem("favorits", JSON.stringify([]));
+        case LOGOUT:
+        case LOGIN:
             return action.payload;
 
-        default: return state;
+        default:
+            return state;
     }
 }

@@ -4,8 +4,8 @@ import { Redirect } from "react-router-dom";
 import { API_KEY } from "../const";
 import FilmList from "./FilmList";
 import Loader from "./Loader";
-import { connect } from 'react-redux';
-import mapStateToProps from '../store/mapStateToProps';
+import { connect } from "react-redux";
+import mapStateToProps from "../store/mapStateToProps";
 
 const NoFilmsPar = styled.p`
     text-align: center;
@@ -13,10 +13,9 @@ const NoFilmsPar = styled.p`
     font-size: 2rem;
 `;
 
-function FavoritsFilms({favoriteFilms, user}) {
-
+function FavoritsFilms({ favoriteFilms, user }) {
     const [films, setFilms] = useState();
-    
+
     useEffect(() => {
         const fetchArr = favoriteFilms.map((id) =>
             fetch(
@@ -25,13 +24,21 @@ function FavoritsFilms({favoriteFilms, user}) {
         );
         Promise.all(fetchArr).then((data) => setFilms(data));
     }, [favoriteFilms]);
-    return (
-        (user.status==="user" || user.status==="admin") ?
+    return user.status === "user" || user.status === "admin" ? (
         <>
-            {films ? <FilmList films={{ results: films }} /> : <Loader />}
-            {films?.length === 0 && <NoFilmsPar>No favorits films</NoFilmsPar>}
-        </> : <Redirect to="/" />
+            {films ? (
+                films?.length > 0 ? (
+                    <FilmList films={{ results: films }} />
+                ) : (
+                    <NoFilmsPar>No favorits films</NoFilmsPar>
+                )
+            ) : (
+                <Loader />
+            )}
+        </>
+    ) : (
+        <Redirect to="/" />
     );
 }
 
-export default connect(mapStateToProps('FavoritsFilms'), null)(FavoritsFilms);
+export default connect(mapStateToProps("FavoritsFilms"), null)(FavoritsFilms);

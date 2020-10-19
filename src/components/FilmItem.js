@@ -1,4 +1,4 @@
-import React, { useRef, useState, useContext } from "react";
+import React, { useRef, useState } from "react";
 import { IMAGE_SIZE } from "../const";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";

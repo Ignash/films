@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import React, { useState } from "react";
 import { Redirect } from "react-router-dom";
 import { InputField } from "../styled_component/InputField";
-import actionSetUser from "../store/actions/actionSetUser";
+import actionLoginUser from "../store/actions/actionLoginUser";
 import { useDispatch } from "react-redux";
 
 const WrapperBlock = styled.form`
@@ -68,6 +68,7 @@ export default function Login() {
         if (!event.target.value) {
             event.target.previousSibling.classList.remove("label-focus");
         }
+
     };
     const validationName = (event) => {
         let target = event.target ? event.target : event;
@@ -85,10 +86,13 @@ export default function Login() {
     };
     const submitHandler = (event) => {
         event.preventDefault();
+
         const name = event.target.elements.name.value;
         const password = event.target.elements.password.value;
+
         let nameValid = true;
         let passwordValid = true;
+
         if (!/[A-Za-z]+/.test(name)) {
             validationName(event.target.elements.name);
             nameValid = false;
@@ -99,10 +103,9 @@ export default function Login() {
         }
 
         if (nameValid && passwordValid) {
-            let status =
-                name === "admin" && password === "admin" ? "admin" : "user";
+            
             setLogin(true);
-            dispatch(actionSetUser({ name, password, status}))
+            dispatch(actionLoginUser({ name, password}))
         }
     };
 
@@ -131,7 +134,7 @@ export default function Login() {
                     name="password"
                 />
             </WrapperInputField>
-            <button type="submit">Login</button>
+            <button type="submit" disabled = {login}>Login</button>
         </WrapperBlock>
     ) : (
         <Redirect to="/" />

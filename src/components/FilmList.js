@@ -12,11 +12,6 @@ const ListFilm = styled.div`
     max-width: 1500px;
     margin: 0 auto;
 `;
-const NotFound = styled.p`
-    text-align: center;
-    font-size: 2rem;
-    margin: 50px 0;
-`;
 
 export default function FilmList(props) {
     const films = props.films?.results || [];
@@ -79,7 +74,7 @@ export default function FilmList(props) {
     };
 
     return (
-        newFilmsList.length>0 ?
+        
         <>
             <Sorting sortingList={sortingList} />
             <ListFilm>
@@ -94,6 +89,6 @@ export default function FilmList(props) {
                     changePage={changePage}
                 />
             )}
-        </> : <NotFound>Nothing found</NotFound>
+        </> 
     );
 }
