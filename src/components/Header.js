@@ -5,14 +5,7 @@ import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {  actionLogoutUser } from "../store/actions/actions";
 
-const HeaderPage = styled.header`
-    width: 100%;
-    background: rgb(138 230 253);
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
+
 const Sign = styled.div`
     padding: 30px;
     span {
@@ -49,11 +42,22 @@ const Navigation = styled.nav`
     }
 `;
 
-function Header({ user, logoutUser }) {
+function Header({ user, color, logoutUser }) {
     let history = useHistory();
 
+    const HeaderPage = styled.header`
+    width: 100%;
+    // background: rgb(138 230 253);
+    background: ${color};
+
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
+
     return (
-        <HeaderPage>
+        <HeaderPage color={color}>
             <Navigation>
                 <ul>
                     <li>
@@ -108,6 +112,7 @@ const mapDispatchToProps = (dispatch)=>({
 
 const mapStateToProps = (state) => ({
     user: state.user,
+    color: state.headerColor
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

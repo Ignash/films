@@ -15,7 +15,6 @@ const NotFound = styled.p`
 
 function FilmsPlaying({ currentFilms }) {
     const dispatch = useDispatch();
-
     const [page, setPage] = useState(1);
     const [sort, setSort] = useState();
     const [searchText, setSearchText] = useState([]);
@@ -32,7 +31,7 @@ function FilmsPlaying({ currentFilms }) {
     };
 
     useEffect(() => {
-        dispatch(actionGetCurrent({ page, sort, searchText }));
+        dispatch(actionGetCurrent({ page, sort, searchText , s:1}));
     }, [page, sort]);
 
     useEffect(() => {

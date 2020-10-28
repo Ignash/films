@@ -1,13 +1,13 @@
-//Constants
-
-const SET_CURRENT = "SET_CURRENT_FILMS",
-    GET_CURRENT = "GET_CURRENT_FILMS",
-    SET_FAVORITES = "SET_FAVORITES_FILMS",
-    DEL_FAVORITE = "DEL_FAVORITE",
-    SET_DEFAULT_LIST = "SET_DEFAULT_LIST",
-    LOGIN = "LOGIN",
-    CLEAR_FAVORITE = "CLEAR_FAVORITE",
-    LOGOUT = "LOGOUT";
+import {
+    SET_CURRENT,
+    SET_HEADER_COLOR,
+    SET_FAVORITES,
+    DEL_FAVORITE,
+    CLEAR_FAVORITE,
+    GET_CURRENT,
+    LOGOUT,
+    LOGIN
+} from "./actionTypes";
 
 //Actions
 
@@ -46,9 +46,9 @@ function actionSetCurrent(value) {
     };
 }
 
-function actionSetDefaultList(value) {
+function actionSetHeaderColor(value) {
     return {
-        type: SET_DEFAULT_LIST,
+        type: SET_HEADER_COLOR,
         payload: value,
     };
 }
@@ -73,7 +73,7 @@ export {
     actionLoginUser,
     actionLogoutUser,
     actionSetCurrent,
-    actionSetDefaultList,
+    actionSetHeaderColor,
     actionSetFavorites,
     actionClearFavorites
 };

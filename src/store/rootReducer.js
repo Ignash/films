@@ -3,7 +3,7 @@ import getCookie from "../utils/getCookie";
 
 import {
     SET_CURRENT,
-    SET_DEFAULT_LIST,
+    SET_HEADER_COLOR,
     SET_FAVORITES,
     DEL_FAVORITE,
     CLEAR_FAVORITE,
@@ -14,14 +14,14 @@ import {
 const initialState = {
     currentFilms: [],
     favoriteFilms: JSON.parse(localStorage.getItem("favorits")) || [],
-    defaultListFilms: "now_playing",
+    headerColor: "#8ae6fd",
     user: {name: getCookie("name"), status: getCookie("status")} || {name: null, status: null}
 }
 const rootReducer = combineReducers({
     currentFilms,
     favoriteFilms,
     user,
-    defaultListFilms,
+    headerColor,
 });
 
 function currentFilms(state = initialState.currentFilms, action) {
@@ -34,9 +34,9 @@ function currentFilms(state = initialState.currentFilms, action) {
     }
 }
 
-function defaultListFilms(state = initialState.defaultListFilms, action) {
+function headerColor(state = initialState.headerColor, action) {
     switch (action.type) {
-        case SET_DEFAULT_LIST:
+        case SET_HEADER_COLOR:
             return action.payload;
 
         default:
