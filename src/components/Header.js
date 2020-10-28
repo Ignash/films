@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { Link, NavLink } from "react-router-dom";
-import mapStateToProps from '../store/mapStateToProps';
-import mapDispatchToProps from '../store/mapDispatchToProps';
+import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
+import {  actionLogoutUser } from "../store/actions/actions";
 
 const HeaderPage = styled.header`
     width: 100%;
@@ -50,6 +50,8 @@ const Navigation = styled.nav`
 `;
 
 function Header({ user, logoutUser }) {
+    let history = useHistory();
+
     return (
         <HeaderPage>
             <Navigation>
@@ -84,7 +86,7 @@ function Header({ user, logoutUser }) {
                         <span>{user.name}</span>
                         <button
                             onClick={() => {
-                                
+                                history.push('/');
                                 logoutUser();
                             }}>
                             Logout
@@ -100,4 +102,12 @@ function Header({ user, logoutUser }) {
     );
 }
 
-export default connect(mapStateToProps('Header'), mapDispatchToProps('Header'))(Header);
+const mapDispatchToProps = (dispatch)=>({
+    logoutUser:  ()=> dispatch(actionLogoutUser())
+});
+
+const mapStateToProps = (state) => ({
+    user: state.user,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

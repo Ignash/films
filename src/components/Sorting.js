@@ -1,9 +1,9 @@
 import React from "react";
 import WrapperSelect from "../styled_component/WrapperSelect";
 
-export default function Sorting({ sortingList }) {
+export default function Sorting({ changeSorting }) {
     const handleChange = (event) => {
-        sortingList(event.target.value);
+        changeSorting(event.target.value);
     };
     return (
         <WrapperSelect>
@@ -12,10 +12,14 @@ export default function Sorting({ sortingList }) {
                 <option disabled value=" ">
                     &nbsp;
                 </option>
-                <option value="descending">Date Descending</option>
+                <option value="primary_release_date.desc">Date Descending</option>{/*sort_by: primary_release_date.desc */}
+                <option value="primary_release_date.asc">Date Ascending</option>{/* primary_release_date.asc */}
+                <option value="original_title.desc">Title(A-Z)</option>{/* title.desc */}
+                <option value="original_title.asc">Title(Z-A)</option>{/* title.asc */}
+                {/* <option value="descending">Date Descending</option>
                 <option value="ascending">Date Ascending</option>
                 <option value="AZ">Title(A-Z)</option>
-                <option value="ZA">Title(Z-A)</option>
+                <option value="ZA">Title(Z-A)</option> */}
             </select>
         </WrapperSelect>
     );

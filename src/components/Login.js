@@ -1,9 +1,9 @@
 import styled from "@emotion/styled";
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Redirect } from "react-router-dom";
 import { InputField } from "../styled_component/InputField";
-import actionLoginUser from "../store/actions/actionLoginUser";
-import { useDispatch } from "react-redux";
+import {actionLoginUser} from "../store/actions/actions.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const WrapperBlock = styled.form`
     width: 400px;
@@ -17,19 +17,20 @@ const WrapperBlock = styled.form`
     button {
         border-color: rgb(138 230 253);
         color: #fff;
-        background-color: rgb(138 230 253);
+        background-color: #01b4e4;
         border-radius: 5px;
         padding: 6px 10px;
         transition: 0.2s;
     }
-    button:hover {
-        background-color: #01b4e4;
+    button:hover,
+    button:disabled {
+        background-color: rgb(138 230 253);
     }
 `;
 const WrapperInputField = styled.div`
     position: relative;
 `;
-const Paragraf = styled.p`
+const Paragraf = styled.label`
     position: absolute;
     left: 35px;
     top: 6px;
@@ -42,20 +43,28 @@ const Paragraf = styled.p`
     &.notValidName:after {
         content: " must contain only letters";
         color: red;
-        // height: 50px;
-        // width: 50px;
     }
     &.notValidPassword:after {
         content: " must contain at least 5 characters";
         color: red;
-        // height: 50px;
-        // width: 50px;
     }
 `;
 
 export default function Login() {
-    const [login, setLogin] = useState(false);
     const dispatch = useDispatch();
+    const loginUser = useSelector((state) => state.user);
+    const [user, setUser] = useState({});
+    const [validForm, setValidForm] = useState(false);
+
+    const refName = useRef();
+    const refPassword = useRef();
+
+    const validationNameValue = (value) => {
+        return /[A-Za-z]+/.test(value);
+    };
+    const validationPasswordValue = (value) => {
+        return value && value.length >= 5;
+    };
 
     const handlerOnFocus = (event) => {
         event.target.previousSibling.classList.add("label-focus");
@@ -68,18 +77,25 @@ export default function Login() {
         if (!event.target.value) {
             event.target.previousSibling.classList.remove("label-focus");
         }
-
     };
-    const validationName = (event) => {
-        let target = event.target ? event.target : event;
-        if (!/[A-Za-z]+/.test(target.value)) {
+    const handlerOnChange = (event) => {
+        if (event.target.name === "name") {
+            setUser((prev) => ({ ...prev, name: refName.current.value }));
+        }
+        if (event.target.name === "password")
+            setUser((prev) => ({...prev, password: refPassword.current.value,}));
+    };
+    const validationName = () => {
+        let target = refName.current;
+        if (!validationNameValue(target.value)) {
             target.classList.add("notValid");
             target.previousSibling.classList.add("notValidName");
         }
     };
-    const validationPassword = (event) => {
-        let target = event.target ? event.target : event;
-        if (target.value.length < 5) {
+
+    const validationPassword = () => {
+        let target = refPassword.current;
+        if (!validationPasswordValue(target.value)) {
             target.previousSibling.classList.add("notValidPassword");
             target.classList.add("notValid");
         }
@@ -87,29 +103,19 @@ export default function Login() {
     const submitHandler = (event) => {
         event.preventDefault();
 
-        const name = event.target.elements.name.value;
-        const password = event.target.elements.password.value;
+        const name = refName.current.value;
+        const password = refPassword.current.value;
 
-        let nameValid = true;
-        let passwordValid = true;
-
-        if (!/[A-Za-z]+/.test(name)) {
-            validationName(event.target.elements.name);
-            nameValid = false;
-        }
-        if (password.length < 5) {
-            validationPassword(event.target.elements.password);
-            passwordValid = false;
-        }
-
-        if (nameValid && passwordValid) {
-            
-            setLogin(true);
-            dispatch(actionLoginUser({ name, password}))
+        if (validationNameValue(name) && validationPasswordValue(password)) {
+            dispatch(actionLoginUser(user));
         }
     };
 
-    return !login ? (
+    useEffect(() => {
+        setValidForm(validationNameValue(user.name) && validationPasswordValue(user.password));
+    }, [user]);
+
+    return !loginUser.name ? (
         <WrapperBlock onSubmit={submitHandler}>
             <WrapperInputField>
                 <Paragraf>Name</Paragraf>
@@ -119,7 +125,9 @@ export default function Login() {
                         handlerOnBlur(event);
                         validationName(event);
                     }}
+                    onChange={(event) => handlerOnChange(event)}
                     name="name"
+                    ref={refName}
                 />
             </WrapperInputField>
             <WrapperInputField>
@@ -131,10 +139,14 @@ export default function Login() {
                         handlerOnBlur(event);
                         validationPassword(event);
                     }}
+                    onChange={(event) => handlerOnChange(event)}
                     name="password"
+                    ref={refPassword}
                 />
             </WrapperInputField>
-            <button type="submit" disabled = {login}>Login</button>
+            <button type="submit" disabled={!validForm}>
+                Login
+            </button>
         </WrapperBlock>
     ) : (
         <Redirect to="/" />

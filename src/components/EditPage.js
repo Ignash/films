@@ -1,6 +1,6 @@
 import React from "react";
 import WrapperSelect from "../styled_component/WrapperSelect";
-import actionSetDefaultList from "../store/actions/actionSetDefaultList";
+import {actionSetDefaultList} from "../store/actions/actions.js";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function EditPage() {

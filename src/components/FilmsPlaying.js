@@ -1,13 +1,11 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect } from "react";
 import FilmList from "./FilmList";
-import { API_KEY } from "../const";
 import Loader from "./Loader";
-import { InputField } from "../styled_component/InputField";
-import actionGetCurrent from '../store/actions/actionGetCurrent';
-import mapStateToProps from '../store/mapStateToProps';
-import { connect, useDispatch, useSelector } from 'react-redux';
+import { actionGetCurrent } from "../store/actions/actions.js";
+import { connect, useDispatch } from "react-redux";
 import styled from "@emotion/styled";
-
+import Sorting from "./Sorting";
+import Search from "./Search";
 
 const NotFound = styled.p`
     text-align: center;
@@ -15,69 +13,54 @@ const NotFound = styled.p`
     margin: 50px 0;
 `;
 
-function FilmsPlaying({currentFilms}) {
-    const defaultList = useSelector(store=>store.defaultListFilms)
+function FilmsPlaying({ currentFilms }) {
     const dispatch = useDispatch();
-    const [page, setPage] = useState(1);
-    const defaultListUrl = `https://api.themoviedb.org/3/movie/${defaultList}?api_key=${API_KEY}&language=en-US&page=${page}`;
-    const [currentUrlFetch, setCurrentUrlFetch] = useState(defaultListUrl);
-    const refInput = useRef("");
 
-    let searchInAction = false;
-    const delay = 1000;
+    const [page, setPage] = useState(1);
+    const [sort, setSort] = useState();
+    const [searchText, setSearchText] = useState([]);
 
     const changePage = (page) => {
         setPage(page);
     };
-
-    const handlerSearch = () => {
-        if (searchInAction) return;
-        if (refInput.current.value.length > 0) {
-            searchInAction = true;
-            return setTimeout(() => {
-                if (!refInput.current.value.length) {
-                    setCurrentUrlFetch(defaultListUrl);
-                    return;
-                }
-                setCurrentUrlFetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&language=en-US&query=${refInput.current.value.replace(/\W/g,"%20")}&include_adult=false&page=1`);
-
-                searchInAction = false;
-            }, delay);
-        }
+    const changeSorting = (sort) => {
+        setSort(`${sort}`);
     };
-    useEffect(
-        () => {
-            setCurrentUrlFetch((prev) => {
-                let index = prev.lastIndexOf("page=") + 5;
-                let currUrl = prev.split("");
-                currUrl.splice(index, prev.length, page);
-                return currUrl.join("");
-            });
-        },
-        [page]
-    );
+
+    const changeSearch = (value) => {
+        setSearchText(value.join(","));
+    };
 
     useEffect(() => {
-        refInput.current.focus();
-        dispatch(actionGetCurrent(currentUrlFetch));
-    }, [currentUrlFetch]);
+        dispatch(actionGetCurrent({ page, sort, searchText }));
+    }, [page, sort]);
+
+    useEffect(() => {
+        dispatch(actionGetCurrent({ page: 1, sort, searchText }));
+    }, [searchText]);
 
     return (
         <>
             <section>
-                <InputField
-                    ref={refInput}
-                    type="text"
-                    onChange={handlerSearch}
-                />
+                <Search changeSearch={changeSearch} />
+                <Sorting changeSorting={changeSorting} />
             </section>
-            {currentFilms.results ? 
-            (currentFilms.results?.length > 0 ? <FilmList films={currentFilms} changePage={changePage} /> : <NotFound>Not found films</NotFound>) : 
-            (<Loader />)
-            }
-
+            {currentFilms.results ? (
+                currentFilms.results?.length > 0 ? (
+                    <FilmList films={currentFilms} changePage={changePage} />
+                ) : (
+                    <NotFound>Not found films</NotFound>
+                )
+            ) : (
+                <Loader />
+            )}
         </>
     );
 }
 
-export default connect(mapStateToProps('FilmsPlaying'), null)(FilmsPlaying);
+const mapStateToProps = (state) => ({
+    currentFilms: state.currentFilms
+});
+
+export default connect(mapStateToProps)(FilmsPlaying);
+

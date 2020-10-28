@@ -1,5 +1,6 @@
 const API_KEY = "83726f3e496fe12660b00d6447c0d6bd";
 const API_KEY_YOUTUBE = "AIzaSyDWAAyqBg-BhI48nvwZzP5YxgFgFSJPft4";
+const DELAY_SEARCH = 500
 
 
 const IMAGE_SIZE = {
@@ -8,4 +9,4 @@ const IMAGE_SIZE = {
     big: "600_and_h900_bestv2",
 };
 
-export { API_KEY, API_KEY_YOUTUBE, IMAGE_SIZE };
+export { API_KEY, API_KEY_YOUTUBE, IMAGE_SIZE, DELAY_SEARCH };

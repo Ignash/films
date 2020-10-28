@@ -3,9 +3,8 @@ import { IMAGE_SIZE } from "../const";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
-import mapStateToProps from '../store/mapStateToProps';
-import mapDispatchToProps from '../store/mapDispatchToProps';
 import { connect } from 'react-redux';
+import { actionDeleteFavorite, actionSetFavorites } from "../store/actions/actions";
 
 const ItemFilm = styled.section`
     width: 220px;
@@ -71,7 +70,6 @@ const Favorit = styled.button`
 function FilmItem(props) {
     const { filmItem, delFavorite, addFavorite, favoriteFilms } = props;
     let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem.poster_path}`;
-
     const user = useSelector((store)=> store.user)
 
     const [favorit, setFavorit] = useState(
@@ -118,4 +116,16 @@ function FilmItem(props) {
     );
 }
 
-export default connect(mapStateToProps('FavoritsFilms'), mapDispatchToProps('FilmItem'))(FilmItem);
+const mapDispatchToProps = (dispatch)=>({
+        delFavorite: (id)=> dispatch(actionDeleteFavorite(id)),
+        addFavorite: (id)=> dispatch(actionSetFavorites(id))
+    });
+
+const mapStateToProps = (state) => ({
+        favoriteFilms: state.favoriteFilms,
+        user: state.user
+    })
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FilmItem);

@@ -5,7 +5,6 @@ import { API_KEY } from "../const";
 import FilmList from "./FilmList";
 import Loader from "./Loader";
 import { connect } from "react-redux";
-import mapStateToProps from "../store/mapStateToProps";
 
 const NoFilmsPar = styled.p`
     text-align: center;
@@ -41,4 +40,10 @@ function FavoritsFilms({ favoriteFilms, user }) {
     );
 }
 
-export default connect(mapStateToProps("FavoritsFilms"), null)(FavoritsFilms);
+const mapStateToProps = (state) => ({
+    favoriteFilms: state.favoriteFilms,
+    user: state.user
+})
+
+export default connect(mapStateToProps)(FavoritsFilms);
+

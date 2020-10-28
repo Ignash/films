@@ -1,5 +1,6 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
+import getCurrentArrayButton from "../utils/getCurrentArrayButton"
 
 const ButtonContainer = styled.button`
     padding: 5px;
@@ -26,8 +27,7 @@ const SwitchButton = styled.button`
 `;
 
 export default function Pagination({ totalPages, currentPage, changePage }) {
-    const leftLimit = 3;
-    const rightLimit = 3;
+    
 
     const [arrayButton, setArrayButton] = useState([]);
 
@@ -35,38 +35,7 @@ export default function Pagination({ totalPages, currentPage, changePage }) {
         setArrayButton(getCurrentArrayButton(totalPages, currentPage));
     }, [currentPage, totalPages]);
 
-    function getCurrentArrayButton(totalPages, currentPage){
-        const pagesInPag = leftLimit + rightLimit + 1;
-        let arrayButton = [];
-        if (totalPages <= pagesInPag) {
-            for (let i = 1; i <= totalPages; i++) {
-                arrayButton.push(i);
-            }
-            return arrayButton;
-        } 
-        if (currentPage <= leftLimit) {
-            for (let i = 1; i <= pagesInPag; i++) {
-                arrayButton.push(i);
-            }
-            return arrayButton;
-        } 
-        if (totalPages - currentPage <= rightLimit) {
-            for (
-                let i = totalPages - pagesInPag + 1;
-                i <= totalPages;
-                i++
-            ) {
-                arrayButton.push(i);
-            }
-            return arrayButton;
-        } 
-
-        for ( let i = currentPage - leftLimit; i <= currentPage + rightLimit; i++ ) {
-            arrayButton.push(i);
-        };
-        return arrayButton;
-                
-    }
+    
 
     return (
         <>
