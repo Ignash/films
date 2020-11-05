@@ -21,7 +21,7 @@ const Sign = styled.div`
     button:hover {
         color: #000;
     }
-    button:first-child{
+    button:first-of-type{
         border-right: 0.3mm solid black;
     }
 `;
@@ -127,10 +127,10 @@ function Header({ user, color, logoutUser }) {
                     ) : (
                         <>
                             <button>
-                                <Link to="/login">Log In</Link>
+                                <NavLink to="/login">Log In</NavLink>
                             </button>
                             <button>
-                                <Link to="/registration">Sign Up</Link>
+                                <NavLink to="/registration">Sign Up</NavLink>
                             </button>
                         </>
                     )}
