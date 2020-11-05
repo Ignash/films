@@ -41,8 +41,16 @@ export default function Pagination({ totalPages, currentPage, changePage }) {
         <>
             <ButtonsWrapper>
                 {currentPage !== 1 && (
-                    <SwitchButton onClick={() => changePage(currentPage - 1)}>
+                    <>
+                    <span>1</span>
+                    <SwitchButton onClick={() => changePage(1)}>
                         &laquo;
+                    </SwitchButton>
+                    </>
+                )}
+                {currentPage !== 1 && (
+                    <SwitchButton onClick={() => changePage(currentPage - 1)}>
+                        &lsaquo;
                     </SwitchButton>
                 )}
                 {arrayButton.map((item) => (
@@ -56,6 +64,11 @@ export default function Pagination({ totalPages, currentPage, changePage }) {
                 ))}
                 {totalPages !== currentPage && (
                     <SwitchButton onClick={() => changePage(currentPage + 1)}>
+                        &rsaquo;
+                    </SwitchButton>
+                )}
+                {totalPages !== currentPage && (
+                    <SwitchButton onClick={() => changePage(totalPages)}>
                         &raquo;
                     </SwitchButton>
                 )}

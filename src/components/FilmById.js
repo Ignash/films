@@ -5,6 +5,8 @@ import { API_KEY, IMAGE_SIZE } from "../const";
 import FilmVideo from "./FilmVideo";
 import Loader from "./Loader";
 import Reviews from "./Reviews";
+import defaultImg from '../publish/defaultImg.png'
+
 
 const Section = styled.section`
     max-width: 900px;
@@ -47,11 +49,6 @@ const Video = styled.div`
     margin: 0 auto;
 `;
 
-const NotFound = styled.p`
-    text-align: center;
-    margin-top: 50px;
-`;
-
 export default function FilmById() {
     const { id } = useParams();
     const [filmData, setFilmData] = useState();
@@ -79,11 +76,7 @@ export default function FilmById() {
         <Section>
             <Info>
                 <Poster>
-                    {filmData?.poster_path ? (
-                        <img src={srcImg} alt="poster" />
-                    ) : (
-                        <NotFound>Poster not found</NotFound>
-                    )}
+                    <img src={filmData?.poster_path ? srcImg : defaultImg} alt="poster" />
                 </Poster>
                 <Description>
                     <h2>{filmData?.title}</h2>

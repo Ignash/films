@@ -5,6 +5,8 @@ import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import { connect } from 'react-redux';
 import { actionDeleteFavorite, actionSetFavorites } from "../store/actions/actions";
+import defaultImg from '../publish/defaultImg.png'
+
 
 const ItemFilm = styled.section`
     width: 220px;
@@ -45,13 +47,6 @@ const Desccriptions = styled.div`
     }
 `;
 
-const ShoulBe = styled.div`
-    height: 330px;
-    text-align: center;
-    p {
-        margin-top: 50px;
-    }
-`;
 const Favorit = styled.button`
     font-size: 2rem;
     position: absolute;
@@ -90,20 +85,14 @@ function FilmItem(props) {
     return (
         <ItemFilm>
             <Link to={`/film/${filmItem.id}`}>
-                {filmItem.poster_path ? (
-                    <img src={srcImg} alt="poster" />
-                ) : (
-                    <ShoulBe>
-                        <p>There should be a poster</p>
-                    </ShoulBe>
-                )}
+                <img src={filmItem.poster_path ? srcImg : defaultImg} alt="poster" />
                 <Desccriptions>
                     <h3>{filmItem?.title}</h3>
                     <p>{filmItem?.release_date}</p>
                     <p>{filmItem?.vote_average}</p>
                 </Desccriptions>
             </Link>
-            {(user.status==="user" || user.status==="admin") && (
+            {user?.role && (
                 <Favorit
                     className={favorit ? "favorit" : ""}
                     ref={refFavorit}

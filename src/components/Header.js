@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useState, useRef, useEffect} from "react";
 import styled from "@emotion/styled";
 import { Link, NavLink } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {  actionLogoutUser } from "../store/actions/actions";
+import UserData from "./UserData";
 
 
 const Sign = styled.div`
@@ -11,11 +12,17 @@ const Sign = styled.div`
     span {
         padding-right: 25px;
     }
+
     button {
         color: #484848;
+        padding: 0 5px;
     }
+
     button:hover {
         color: #000;
+    }
+    button:first-child{
+        border-right: 0.3mm solid black;
     }
 `;
 
@@ -43,21 +50,40 @@ const Navigation = styled.nav`
 `;
 
 function Header({ user, color, logoutUser }) {
-    let history = useHistory();
+    const history = useHistory();
+    const [isShowUser, setIsShowUser] = useState(false);
+    const refSign = useRef()
+
 
     const HeaderPage = styled.header`
-    width: 100%;
-    // background: rgb(138 230 253);
-    background: ${color};
+        width: 100%;
+        // background: rgb(138 230 253);
+        background: ${color};
 
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    `;
+
+    const showDataUser = (event)=>{
+        event.stopPropagation();
+        event.nativeEvent.stopImmediatePropagation();
+        setIsShowUser((prev)=>{
+            return !prev
+        });
+    };
+    const handleClickOutside = (event)=> {
+        setIsShowUser(false)
+    }
+
+    useEffect(() => {
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
 
     return (
-        <HeaderPage color={color}>
+        <HeaderPage color={color} >
             <Navigation>
                 <ul>
                     <li>
@@ -65,14 +91,14 @@ function Header({ user, color, logoutUser }) {
                             Films
                         </NavLink>
                     </li>
-                    {(user.status === "user" || user.status === "admin") && (
+                    {(user?.role) && (
                         <li>
                             <NavLink activeClassName="active" to="/favorits">
                                 Favorites
                             </NavLink>
                         </li>
                     )}
-                    {user.status === "admin" && (
+                    {user?.role === "admin" && (
                         <li>
                             <NavLink
                                 activeClassName="active"
@@ -84,23 +110,31 @@ function Header({ user, color, logoutUser }) {
                     )}
                 </ul>
             </Navigation>
-            <Sign>
-                {user.name ? (
-                    <>
-                        <span>{user.name}</span>
-                        <button
-                            onClick={() => {
-                                history.push('/');
-                                logoutUser();
-                            }}>
-                            Logout
-                        </button>
-                    </>
-                ) : (
-                    <button>
-                        <Link to="/login">Login</Link>
-                    </button>
-                )}
+            <Sign ref={refSign}>
+                <div >
+                    {user?.login ? (
+                        <div>
+                            <button onClick={showDataUser}>{user?.login}</button>
+                            {isShowUser && <UserData user={user}/>}
+                            <button
+                                onClick={() => {
+                                    history.push('/');
+                                    logoutUser();
+                                }}>
+                                Logout
+                            </button>
+                        </div>
+                    ) : (
+                        <>
+                            <button>
+                                <Link to="/login">Log In</Link>
+                            </button>
+                            <button>
+                                <Link to="/registration">Sign Up</Link>
+                            </button>
+                        </>
+                    )}
+                </div>
             </Sign>
         </HeaderPage>
     );

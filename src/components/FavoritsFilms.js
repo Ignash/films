@@ -15,6 +15,7 @@ const NoFilmsPar = styled.p`
 function FavoritsFilms({ favoriteFilms, user }) {
     const [films, setFilms] = useState();
 
+
     useEffect(() => {
         const fetchArr = favoriteFilms.map((id) =>
             fetch(
@@ -23,7 +24,8 @@ function FavoritsFilms({ favoriteFilms, user }) {
         );
         Promise.all(fetchArr).then((data) => setFilms(data));
     }, [favoriteFilms]);
-    return user.status === "user" || user.status === "admin" ? (
+    
+    return user?.role ? (
         <>
             {films ? (
                 films?.length > 0 ? (

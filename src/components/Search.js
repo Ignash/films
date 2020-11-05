@@ -93,11 +93,9 @@ export default function Search({ changeSearch }) {
                     setSearchKeyWords([]);
                     return;
                 }
+                const query = refInput.current.value.replace(/\W/g,"%20");
                 fetch(
-                    `https://api.themoviedb.org/3/search/keyword?api_key=${API_KEY}&query=${refInput.current.value.replace(
-                        /\W/g,
-                        "%20"
-                    )}&page=1`
+                    `https://api.themoviedb.org/3/search/keyword?api_key=${API_KEY}&query=${query}&page=1`
                 )
                     .then((response) => response.json())
                     .then((searchData) => {
@@ -166,7 +164,7 @@ export default function Search({ changeSearch }) {
                     type="text"
                     onChange={handlerSearch}
                 />
-                <CastomSelect>
+                 {refInput.current.value && <CastomSelect>
                     {searchKeyWords?.map((item) => (
                         <li
                             key={item.id}
@@ -176,7 +174,7 @@ export default function Search({ changeSearch }) {
                             {item.name}
                         </li>
                     ))}
-                </CastomSelect>
+                </CastomSelect>}
             </div>
         </SectionSearch>
     );

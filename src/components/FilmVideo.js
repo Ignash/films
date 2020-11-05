@@ -3,18 +3,14 @@ import styled from "@emotion/styled";
 
 import { API_KEY } from "../const";
 import Loader from "./Loader";
+import defaultVideo from '../publish/defaultVideo.png'
+
 
 const Frame = styled.iframe`
     width: 100%;
     max-width: 640px;
     margin: 20px auto;
     display: block;
-`;
-
-const NotFound = styled.p`
-    text-align: center;
-    font-size: 2rem;
-    margin: 50px 0;
 `;
 
 export default function FilmVideo({ videoId }) {
@@ -34,15 +30,13 @@ export default function FilmVideo({ videoId }) {
     }, [videoId]);
     return video === "loading" ? (
         <Loader />
-    ) : video ? (
+    ) : 
         <Frame
             width="640"
             height="370"
-            src={`https://www.youtube.com/embed/${video}`}
+            src={video ? `https://www.youtube.com/embed/${video}` : defaultVideo}
             allowFullScreen
             frameBorder="0"
         ></Frame>
-    ) : (
-        <NotFound>video not found</NotFound>
-    );
+    ;
 }

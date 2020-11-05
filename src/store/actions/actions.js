@@ -6,7 +6,8 @@ import {
     CLEAR_FAVORITE,
     GET_CURRENT,
     LOGOUT,
-    LOGIN
+    LOGIN,
+    SET_IS_AUTH
 } from "./actionTypes";
 
 //Actions
@@ -33,6 +34,7 @@ function actionLoginUser(value) {
 }
 
 function actionLogoutUser() {
+    document.cookie = "";
     return {
         type: LOGOUT,
         payload: { name: null, status: null },
@@ -66,6 +68,12 @@ function actionClearFavorites() {
         type: CLEAR_FAVORITE
     };
 }
+function actionIsAuth(value) {
+    return {
+        type: SET_IS_AUTH,
+        payload: value
+    };
+}
 
 export {
     actionDeleteFavorite,
@@ -75,5 +83,6 @@ export {
     actionSetCurrent,
     actionSetHeaderColor,
     actionSetFavorites,
-    actionClearFavorites
+    actionClearFavorites,
+    actionIsAuth
 };

@@ -17,26 +17,33 @@ function FilmsPlaying({ currentFilms }) {
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
     const [sort, setSort] = useState();
-    const [searchText, setSearchText] = useState([]);
+    const [searchText, setSearchText] = useState("");
 
     const changePage = (page) => {
         setPage(page);
     };
+
     const changeSorting = (sort) => {
         setSort(`${sort}`);
     };
 
     const changeSearch = (value) => {
-        setSearchText(value.join(","));
+        setSearchText((prev)=>{
+            if(prev !== value.join(",")){
+                setPage(1)
+            }
+            return value.join(",")
+        });
     };
-
+    
     useEffect(() => {
-        dispatch(actionGetCurrent({ page, sort, searchText , s:1}));
-    }, [page, sort]);
+        dispatch(actionGetCurrent({ page, sort, searchText }));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [page, sort, searchText]);
 
-    useEffect(() => {
-        dispatch(actionGetCurrent({ page: 1, sort, searchText }));
-    }, [searchText]);
+    // useEffect(() => {
+    //     dispatch(actionGetCurrent({ page: 1, sort, searchText }));
+    // }, [searchText]);
 
     return (
         <>
