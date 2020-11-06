@@ -1,6 +1,6 @@
 import React, {useState, useRef, useEffect} from "react";
 import styled from "@emotion/styled";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {  actionLogoutUser } from "../store/actions/actions";
