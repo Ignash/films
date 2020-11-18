@@ -23,7 +23,6 @@ export default function FilmList(props) {
     }, [films]);
 
     return (
-        
         <>
             <ListFilm>
                 {newFilmsList.map((film) => (

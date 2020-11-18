@@ -145,9 +145,6 @@ export default function Search({ changeSearch }) {
         changeSearch(searchValues);
     }, [selectedWords, changeSearch])
 
-
-
-
     return (
         <SectionSearch>
             <div ref={sectionSearchRef}>

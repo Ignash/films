@@ -33,19 +33,17 @@ export default function Pagination({ totalPages, currentPage, changePage }) {
 
     useEffect(() => {
         setArrayButton(getCurrentArrayButton(totalPages, currentPage));
-    }, [currentPage, totalPages]);
-
-    
+    }, [currentPage, totalPages]);  
 
     return (
         <>
             <ButtonsWrapper>
                 {currentPage !== 1 && (
                     <>
-                    <span>1</span>
-                    <SwitchButton onClick={() => changePage(1)}>
-                        &laquo;
-                    </SwitchButton>
+                        <span>1</span>
+                        <SwitchButton onClick={() => changePage(1)}>
+                            &laquo;
+                        </SwitchButton>
                     </>
                 )}
                 {currentPage !== 1 && (

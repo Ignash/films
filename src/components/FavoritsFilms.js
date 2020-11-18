@@ -17,7 +17,8 @@ function FavoritsFilms({ favoriteFilms, user }) {
 
 
     useEffect(() => {
-        const fetchArr = favoriteFilms.map((id) =>
+        const fetchArr = 
+        favoriteFilms.map((id) =>
             fetch(
                 `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`
             ).then((response) => response.json())

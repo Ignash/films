@@ -28,6 +28,7 @@ export default function FilmVideo({ videoId }) {
                 setVideo(trailer[0]?.key);
             });
     }, [videoId]);
+    
     return video === "loading" ? (
         <Loader />
     ) : 

@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 import styled from "@emotion/styled";
 import { NavLink } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
@@ -48,23 +48,18 @@ const Navigation = styled.nav`
         border-right: 1px solid;
     }
 `;
+const HeaderPage = styled.header`
+    width: 100%;
+    background: ${ props => props.color };
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`;
 
 function Header({ user, color, logoutUser }) {
     const history = useHistory();
     const [isShowUser, setIsShowUser] = useState(false);
-    const refSign = useRef()
-
-
-    const HeaderPage = styled.header`
-        width: 100%;
-        // background: rgb(138 230 253);
-        background: ${color};
-
-        height: 45px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    `;
 
     const showDataUser = (event)=>{
         event.stopPropagation();
@@ -73,7 +68,7 @@ function Header({ user, color, logoutUser }) {
             return !prev
         });
     };
-    const handleClickOutside = (event)=> {
+    const handleClickOutside = ()=> {
         setIsShowUser(false)
     }
 
@@ -110,7 +105,7 @@ function Header({ user, color, logoutUser }) {
                     )}
                 </ul>
             </Navigation>
-            <Sign ref={refSign}>
+            <Sign>
                 <div >
                     {user?.login ? (
                         <div>

@@ -17,7 +17,6 @@ import FilmsPlaying from "./FilmsPlaying";
 import RegistrationForm from "./RegistrationForm";
 import { connect } from 'react-redux';
 
-
 function RouterApp({user}) {
     return (
         <Router>
