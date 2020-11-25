@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import Cookies from "js-cookie"
 
 import {
     SET_CURRENT,
@@ -9,22 +8,24 @@ import {
     CLEAR_FAVORITE,
     LOGOUT,
     LOGIN,
-    SET_IS_AUTH
+    SET_IS_AUTH,
+    SET_INIT_STATE
 } from "./actions/actionTypes";
 
-const initialState = {
+let initialState = {
     currentFilms: [],
-    favoriteFilms: JSON.parse(localStorage.getItem("favorits")) || [],
+    favoriteFilms: [],
     headerColor: "#8ae6fd",
-    user:  Cookies.getJSON("user") || null,
-    isAuth: false
-}
+    user: null,
+    isAuth: false,
+};
+
 const rootReducer = combineReducers({
     currentFilms,
     favoriteFilms,
     user,
     headerColor,
-    isAuth
+    isAuth,
 });
 
 function currentFilms(state = initialState.currentFilms, action) {
@@ -50,7 +51,10 @@ function headerColor(state = initialState.headerColor, action) {
 function favoriteFilms(state = initialState.favoriteFilms, action) {
     switch (action.type) {
         case SET_FAVORITES:
-            return [...state, action.payload];
+            return action.payload;
+
+        case SET_INIT_STATE:
+            return action.payload.favoriteFilms
 
         case DEL_FAVORITE:
             return state.filter((item) => item !== action.payload);
@@ -68,6 +72,9 @@ function user(state = initialState.user, action) {
         case LOGOUT:
         case LOGIN:
             return action.payload;
+
+        case SET_INIT_STATE:
+            return action.payload.user
         default:
             return state;
     }

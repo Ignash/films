@@ -1,19 +1,4 @@
 import React from 'react'
-import styled from "@emotion/styled";
-
-const Select = styled.select`
-    width: 150px;
-    option{
-        position: relative;
-    }
-    option:first-of-type:after{
-        content: "hello";
-        color: black;
-        left: -12px;
-        position: absolute;
-        top: -20px;
-    }
-`;
 
 export default function SelectColor({color, changeColor}) {
     return (
@@ -28,7 +13,6 @@ export default function SelectColor({color, changeColor}) {
                         value="#fff"
                         style={{ backgroundColor: "#fff", padding: "3px 0" }}
                     >
-                        color
                     </option>
                     <option
                         value="#f3ae56"

@@ -1,12 +1,11 @@
-import React, { useRef, useState } from "react";
+import React from "react";
 import { IMAGE_SIZE } from "../const";
 import { Link } from "react-router-dom";
 import styled from "@emotion/styled";
 import { useSelector } from "react-redux";
 import { connect } from 'react-redux';
-import { actionDeleteFavorite, actionSetFavorites } from "../store/actions/actions";
+import { actionAddFavorites } from "../store/actions/actions";
 import defaultImg from '../publish/defaultImg.png'
-
 
 const ItemFilm = styled.section`
     width: 220px;
@@ -63,23 +62,12 @@ const Favorit = styled.button`
 `;
 
 function FilmItem(props) {
-    const { filmItem, delFavorite, addFavorite, favoriteFilms } = props;
-    let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem.poster_path}`;
+    const { filmItem, addFavorite, favoriteFilms } = props;
+    const srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.small}${filmItem.poster_path}`;
     const user = useSelector((store)=> store.user)
-
-    const [favorit, setFavorit] = useState(
-        favoriteFilms?.includes(filmItem.id)
-    );
-    const refFavorit = useRef();
-
+        
     const checkFavorit = () => {
-        if (!refFavorit.current.classList.contains("favorit")) {
-            setFavorit(true);
-            addFavorite(filmItem.id);
-        } else {
-            setFavorit(false);
-            delFavorite(filmItem.id);
-        }
+        addFavorite(filmItem.id);
     };
 
     return (
@@ -94,8 +82,7 @@ function FilmItem(props) {
             </Link>
             {user?.role && (
                 <Favorit
-                    className={favorit ? "favorit" : ""}
-                    ref={refFavorit}
+                    className={favoriteFilms?.includes(filmItem.id) ? "favorit" : ""}
                     onClick={checkFavorit}
                 >
                     &#9733;
@@ -106,15 +93,12 @@ function FilmItem(props) {
 }
 
 const mapDispatchToProps = (dispatch)=>({
-        delFavorite: (id)=> dispatch(actionDeleteFavorite(id)),
-        addFavorite: (id)=> dispatch(actionSetFavorites(id))
+        addFavorite: (id)=> dispatch(actionAddFavorites(id))
     });
 
 const mapStateToProps = (state) => ({
         favoriteFilms: state.favoriteFilms,
         user: state.user
     })
-
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(FilmItem);

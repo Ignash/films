@@ -3,11 +3,15 @@ import {
     actionSetCurrent,
     actionClearFavorites,
     actionLoginUser,
+    actionSetFavorites
 } from "./actions/actions.js";
-import { GET_CURRENT, LOGIN, LOGOUT } from "./actions/actionTypes";
+import { GET_CURRENT, LOGIN, LOGOUT, ADD_FAVORITES } from "./actions/actionTypes";
 import { API_KEY } from "../const";
 import Cookies from "js-cookie";
 
+
+
+// ---------- Current Film
 async function fetchData({ page, sort, searchText }) {
     const sortUrl = sort ? `&sort_by=${sort}` : "";
     const searchUrl = searchText ? `&with_keywords=${searchText}` : "";
@@ -28,22 +32,8 @@ export function* watchGetCurrent() {
     yield takeEvery(GET_CURRENT, workerGetCurrent);
 }
 
+// ------ LOGIN
 async function loginUser(userLoggedIn) {
-    // const response = await fetch("http://localhost:4000/login",{
-    //     method: "POST",
-    //     headers: {
-    //         'Content-Type': 'application/json;charset=utf-8',
-    //         'Accept': 'application/json',
-    //         'Origin': 'http://localhost:3000'
-    //     },
-    //       body: JSON.stringify(user),
-    //       credentials: 'include'
-    // });
-    // if(response.status === 200){
-    //     return await response.json();
-    // }
-    // return null
-
     if (userLoggedIn) return Cookies.getJSON("user");
 }
 
@@ -72,3 +62,34 @@ export function* watchLogin() {
         localStorage.clear();
     }
 }
+
+
+// ------------- Favorite
+async function  setFavorits(id){
+    const response = await fetch("http://localhost:4000/favorite/set",{
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json;charset=utf-8',
+                'Accept': 'application/json',
+                'Authorization': `Bearer ${Cookies.getJSON("token")}`
+            },
+              body: JSON.stringify({film_id: id}),
+        });
+        
+        if(response.status === 200){
+            return await response.json();
+        }
+}
+function* workerSetFavorites(action){
+
+    const data = yield call(setFavorits, action.payload);
+
+    if(data){
+        yield put(actionSetFavorites(data));
+    }
+}
+
+export function* watchSetFavorits(){
+    yield takeEvery(ADD_FAVORITES, workerSetFavorites);
+}
+

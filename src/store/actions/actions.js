@@ -7,11 +7,19 @@ import {
     GET_CURRENT,
     LOGOUT,
     LOGIN,
-    SET_IS_AUTH
+    SET_IS_AUTH,
+    ADD_FAVORITES,
+    SET_INIT_STATE,
 } from "./actionTypes";
 
 //Actions
 
+function actionSetInitState(value) {
+    return {
+        type: SET_INIT_STATE,
+        payload: value,
+    };
+}
 function actionDeleteFavorite(value) {
     return {
         type: DEL_FAVORITE,
@@ -55,9 +63,14 @@ function actionSetHeaderColor(value) {
     };
 }
 
+function actionAddFavorites(value) {
+    return {
+        type: ADD_FAVORITES,
+        payload: value,
+    };
+}
+
 function actionSetFavorites(value) {
-    const currentArr = JSON.parse(localStorage.getItem("favorits"));
-    localStorage.setItem("favorits", JSON.stringify([...currentArr, value]));
     return {
         type: SET_FAVORITES,
         payload: value,
@@ -65,13 +78,13 @@ function actionSetFavorites(value) {
 }
 function actionClearFavorites() {
     return {
-        type: CLEAR_FAVORITE
+        type: CLEAR_FAVORITE,
     };
 }
 function actionIsAuth(value) {
     return {
         type: SET_IS_AUTH,
-        payload: value
+        payload: value,
     };
 }
 
@@ -82,7 +95,9 @@ export {
     actionLogoutUser,
     actionSetCurrent,
     actionSetHeaderColor,
-    actionSetFavorites,
+    actionAddFavorites,
     actionClearFavorites,
-    actionIsAuth
+    actionIsAuth,
+    actionSetFavorites,
+    actionSetInitState,
 };
