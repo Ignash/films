@@ -1,21 +1,21 @@
-import styled from '@emotion/styled'
-import React from 'react'
-import { keyframes } from '@emotion/core'
+import styled from "@emotion/styled";
+import React from "react";
+import { keyframes } from "@emotion/core";
 
 const rotate = keyframes`
-0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 `;
 
 const LoaderWrapper = styled.div`
     width: 80px;
     height: 80px;
     margin: 30px auto;
-    &:after{
+    &:after {
         content: " ";
         display: block;
         width: 64px;
@@ -29,7 +29,5 @@ const LoaderWrapper = styled.div`
 `;
 
 export default function Loader() {
-    return (
-        <LoaderWrapper />
-    )
+    return <LoaderWrapper />;
 }

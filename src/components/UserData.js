@@ -4,7 +4,6 @@ import React from 'react'
 const WrapperUser = styled.div`
     position: absolute;
     background-color: #ccc;
-    
     top: 45px;
     width: 160px;
     border-radius: 0 0 4px 4px;

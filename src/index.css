@@ -63,5 +63,9 @@ a{
   text-decoration: underline;
 }
 
+.hidden{
+  overflow: hidden;
+}
+
 
 

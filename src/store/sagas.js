@@ -40,7 +40,6 @@ async function loginUser(userLoggedIn) {
 function* workerLogin(payload) {
     const dataUser = yield call(loginUser, payload);
 
-    localStorage.setItem("favorits", JSON.stringify([]));
     yield put(actionLoginUser(dataUser));
 }
 
@@ -59,7 +58,6 @@ export function* watchLogin() {
         Cookies.remove("token", { path: "" });
 
         yield put(actionClearFavorites());
-        localStorage.clear();
     }
 }
 

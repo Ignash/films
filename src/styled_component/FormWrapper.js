@@ -39,7 +39,7 @@ const FormWrapper = styled.section`
         align-items: center;
         justify-content: center;
         height: 0;
-        transition: 0.5s;
+        transition: 0.5s ease;
         overflow: hidden;
     }
     .showError{

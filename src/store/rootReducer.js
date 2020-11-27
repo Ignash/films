@@ -4,7 +4,6 @@ import {
     SET_CURRENT,
     SET_HEADER_COLOR,
     SET_FAVORITES,
-    DEL_FAVORITE,
     CLEAR_FAVORITE,
     LOGOUT,
     LOGIN,
@@ -55,9 +54,6 @@ function favoriteFilms(state = initialState.favoriteFilms, action) {
 
         case SET_INIT_STATE:
             return action.payload.favoriteFilms
-
-        case DEL_FAVORITE:
-            return state.filter((item) => item !== action.payload);
 
         case CLEAR_FAVORITE:
             return [];
