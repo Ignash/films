@@ -15,7 +15,6 @@ const NoFilmsPar = styled.p`
 function FavoritsFilms({ favoriteFilms, user }) {
     const [films, setFilms] = useState();
 
-
     useEffect(() => {
         const fetchArr = 
         favoriteFilms.map((id) =>

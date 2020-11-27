@@ -8,6 +8,7 @@ import { connect } from "react-redux";
 import FormWrapper from "../styled_component/FormWrapper";
 import Button from "../styled_component/Button";
 import FormInputField from "../components/FormInputField";
+import setInitialState from "../utils/setInitialState"
 
 function RegistrationForm({ user }) {
     const dispatch = useDispatch();
@@ -42,11 +43,17 @@ function RegistrationForm({ user }) {
             body: JSON.stringify(dataUser),
             credentials: "include",
         });
+
         const status = response.status;
+
         if (status === 200) {
+
             dispatch(actionLoginUser(response.ok));
+            setInitialState()
             history.push("/");
+
         } else {
+
             const data = await response.json();
             setErrorMessage(() => {
                 setTimeout(() => {
@@ -55,6 +62,7 @@ function RegistrationForm({ user }) {
 
                 return data.message;
             });
+            
         }
     };
 

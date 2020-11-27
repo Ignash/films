@@ -2,7 +2,6 @@ import {
     SET_CURRENT,
     SET_HEADER_COLOR,
     SET_FAVORITES,
-    DEL_FAVORITE,
     CLEAR_FAVORITE,
     GET_CURRENT,
     LOGOUT,
@@ -17,12 +16,6 @@ import {
 function actionSetInitState(value) {
     return {
         type: SET_INIT_STATE,
-        payload: value,
-    };
-}
-function actionDeleteFavorite(value) {
-    return {
-        type: DEL_FAVORITE,
         payload: value,
     };
 }
@@ -89,7 +82,6 @@ function actionIsAuth(value) {
 }
 
 export {
-    actionDeleteFavorite,
     actionGetCurrent,
     actionLoginUser,
     actionLogoutUser,

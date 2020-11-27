@@ -1,19 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "@emotion/styled";
 import { Redirect, useParams } from "react-router-dom";
 import { API_KEY, IMAGE_SIZE } from "../const";
 import FilmVideo from "./FilmVideo";
 import Loader from "./Loader";
 import Reviews from "./Reviews";
-import defaultImg from '../publish/defaultImg.png'
-
-
-const Section = styled.section`
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 15px;
-    background: rgb(147 191 202 / 14%);
-`;
+import defaultImg from "../publish/defaultImg.png";
 
 const Info = styled.div`
     display: flex;
@@ -29,6 +21,13 @@ const Poster = styled.div`
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     }
 `;
+const Section = styled.section`
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 15px;
+    background: rgb(147 191 202 / 14%);
+`;
+
 const Description = styled.div`
     padding: 5px 30px;
     min-width: 250px;
@@ -49,34 +48,48 @@ const Video = styled.div`
     margin: 0 auto;
 `;
 
-export default function FilmById() {
-    const { id } = useParams();
-    const [filmData, setFilmData] = useState();
+export default function FilmById({ filmId }) {
+    const { id = filmId } = useParams();
+    const [filmData, setFilmData] = useState(null);
     const [status, setStatus] = useState(200);
+    let load = useRef(false);
 
     let srcImg = `https://image.tmdb.org/t/p/${IMAGE_SIZE.medium}${filmData?.poster_path}`;
 
     useEffect(() => {
-        fetch(
-            `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`
-        )
-            .then((response) => {
-                if (response.status === 404) {
-                    setStatus(404);
-                    return null;
-                }
-                return response.json();
-            })
-            .then((filmData) => {
-                setFilmData(filmData);
-            });
+        async function fetchData() {
+
+            load.current = true;
+
+            const response = await fetch(
+                `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`
+            );
+
+            let data;
+
+            if (response.status === 404) {
+                setStatus(404);
+                data = null;
+            } else {
+                data = await response.json();
+            }
+
+            load.current = false;
+
+            setFilmData(data);
+        }
+
+        fetchData();
     }, [id]);
 
-    return filmData ? (
+    return !load.current ? (
         <Section>
             <Info>
                 <Poster>
-                    <img src={filmData?.poster_path ? srcImg : defaultImg} alt="poster" />
+                    <img
+                        src={filmData?.poster_path ? srcImg : defaultImg}
+                        alt="poster"
+                    />
                 </Poster>
                 <Description>
                     <h2>{filmData?.title}</h2>
@@ -96,6 +109,8 @@ export default function FilmById() {
     ) : status === 404 ? (
         <Redirect to="/page404" />
     ) : (
-        <Loader />
+        <>
+            <Loader />
+        </>
     );
 }

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import React, { useEffect, useState } from "react";
 import Pagination from "./Pagination";
-import FilmItem from './FilmItem'
+import FilmItem from "./FilmItem";
 
 const ListFilm = styled.div`
     display: flex;
@@ -23,10 +23,10 @@ export default function FilmList(props) {
     }, [films]);
 
     return (
-        <>
+        <section>
             <ListFilm>
                 {newFilmsList.map((film) => (
-                    <FilmItem key={film.id} filmItem={film} />
+                    <FilmItem key={film.id} filmItem={film}/>
                 ))}
             </ListFilm>
             {props.films?.page && (
@@ -36,6 +36,6 @@ export default function FilmList(props) {
                     changePage={changePage}
                 />
             )}
-        </> 
+        </section>
     );
 }
